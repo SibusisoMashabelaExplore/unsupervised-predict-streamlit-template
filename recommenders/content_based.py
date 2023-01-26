@@ -39,7 +39,7 @@ movies = pd.read_csv('resources/data/movies.csv', sep = ',')
 ratings = pd.read_csv('resources/data/ratings.csv')
 movies.dropna(inplace=True)
 
-def data_preprocessing(subset_size):
+def data_preprocessing(movie_list):
     """Prepare data for use within Content filtering algorithm.
 
     Parameters
@@ -53,11 +53,17 @@ def data_preprocessing(subset_size):
         Subset of movies selected for content-based filtering.
 
     """
+    a = movies[movies['title']==movie_list[0]]['genres'].iloc[0]
+    b = movies[movies['title']==movie_list[1]]['genres'].iloc[0]
+    c = movies[movies['title']==movie_list[2]]['genres'].iloc[0]
+    
+    mov = movies[(movies['genres']==a) | (movies['genres']==b) | (movies['genres']==c)]
+    
     # Split genre data into individual words.
-    movies['keyWords'] = movies['genres'].str.replace('|', ' ')
+    mov['keyWords'] = mov['genres'].str.replace('|', ' ', regex=True)
     # Subset of the data
-    movies_subset = movies[:subset_size]
-    return movies_subset
+    #movies_subset = movies[:subset_size]
+    return mov
 
 # !! DO NOT CHANGE THIS FUNCTION SIGNATURE !!
 # You are, however, encouraged to change its content.  
@@ -80,16 +86,17 @@ def content_model(movie_list,top_n=10):
     """
     # Initializing the empty list of recommended movies
     recommended_movies = []
-    data = data_preprocessing(27000)
+    data = data_preprocessing(movie_list)
     # Instantiating and generating the count matrix
     count_vec = CountVectorizer()
     count_matrix = count_vec.fit_transform(data['keyWords'])
     indices = pd.Series(data['title'])
+    indices = indices.reset_index()
     cosine_sim = cosine_similarity(count_matrix, count_matrix)
     # Getting the index of the movie that matches the title
-    idx_1 = indices[indices == movie_list[0]].index[0]
-    idx_2 = indices[indices == movie_list[1]].index[0]
-    idx_3 = indices[indices == movie_list[2]].index[0]
+    idx_1 = indices[indices['title'] == movie_list[0]].index[0]
+    idx_2 = indices[indices['title'] == movie_list[1]].index[0]
+    idx_3 = indices[indices['title'] == movie_list[2]].index[0]
     # Creating a Series with the similarity scores in descending order
     rank_1 = cosine_sim[idx_1]
     rank_2 = cosine_sim[idx_2]
@@ -99,7 +106,7 @@ def content_model(movie_list,top_n=10):
     score_series_2 = pd.Series(rank_2).sort_values(ascending = False)
     score_series_3 = pd.Series(rank_3).sort_values(ascending = False)
     # Getting the indexes of the 10 most similar movies
-    listings = score_series_1.append(score_series_1).append(score_series_3).sort_values(ascending = False)
+    listings = score_series_1.append(score_series_2).append(score_series_3).sort_values(ascending = False)
 
     # Store movie names
     recommended_movies = []
