@@ -32,6 +32,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from PIL import Image
+import PIL.Image as PILI
 import plotly_express as px
 
 # Custom Libraries
@@ -126,18 +127,16 @@ def main():
         c2.markdown("## Meet the Alphas")
         d1,d2,d3= st.columns([1,1,1])
         e1,e2,e3= st.columns([1,1,1])
-        d1.image("https://bit.ly/3kGcGPs")
+        d1.image("francis.jpg")
         d1.write("#### Francis Egah, CEO")
-        d2.image("https://t.ly/o3IS4")
+        d2.image("olisa (1).png")
         d2.write("#### Olisa Clement,  Chief AI Engineer")
-        d3.image("https://t.ly/o3IS4")
+        d3.image("abdul.jfif")
         d3.write("#### Abdulrasheed Musa, Product Manager")
-        e1.image("https://t.ly/o3IS4")
-        e1.write("#### Emmanuel Oraegbu,  Data Scientist")
-        e2.image("https://t.ly/o3IS4")
-        e2.write("#### Sibusiso Mashabela, Sales Manager")
-        e3.image("https://t.ly/o3IS4")
-        e3.write("#### Karabo Molema, Business Analyst")
+        e1.image("sibu.jpg")
+        e1.write("#### Sibusiso Mashabela, Sales Manager")
+        e2.image("karabo (1).PNG")
+        e2.write("#### Karabo Molema, Business Analyst")
         st.write("--")
         st.write("<h1 style='text-align: center; color: red;'>Alpha Analytics</h1>", unsafe_allow_html=True)
 
@@ -150,6 +149,7 @@ def main():
         st.subheader("Project Information")
         st.write("We a love to enjoy good movies. Our aim in this project is to enhance your movie experience through a robust recommendation engine putting into consideration your preferences as well  those of many other movie lovers. You can use the 'Content-based' engine to get movies similar to your preferences or 'Collaborative' engine to see what other people are watching. Enjoy your experience!!")
         st.subheader("Interact with Our Data")
+        st.write("No worries about choosing which movie to see. Use our movie database to see what ratings other moviegoers have given to some of their favorite films.")
         #
         x_ax_val = st.selectbox("Select Movie", options=matrix.columns)
         
@@ -213,8 +213,34 @@ def main():
     # ------------- SAFE FOR ALTERING/EXTENSION -------------------
     if page_selection == "Solution Overview":
         st.title("Solution Overview")
-        st.write("Describe your winning approach on this page")
+        
+        # Detailing the approach
+        st.subheader("Our Approach")
+        st.write("To create an efficient system for our customers, we designed two types of recommender engines: content-based filtering and collaborative filtering systems to ensure that the movies list recommended by the corresponds to their preferences. The goal of content-based techniques is to attempt to construct a model based on the given 'features' that explains the observed user-item interactions. Considering users and movies, we will try to model the fact that 'User1' enjoys 'action' movies, therefore we can recommend some action movies to him.")
+        st.write("In collaborative filtering, new movies are recommended to consumers based on the interests and preferences of other like users. It is a very intelligent recommender system that is based on the similarities of various users. It analyzes the preferences of similar users and makes recommendations.")
+        
+        # EDA section
+        st.subheader("EDA")
+        st.write("Let's give you some insight to understand our data")
+        # Creating plots to show statistics
+        st.markdown("##### Movie Production by Year")
+        st.image("movie_produc_yr.png")
+        st.markdown("##### Top 20 Movies by Rating")
+        st.image("top20rted.png")
+        st.markdown("##### Genres to look out for")
+        st.image("genre.png")
 
+        # Modelling section
+        st.subheader("Models")
+        st.markdown("Two algorithmic approach will be used for the model development. Namely Content-based filtering and Collaborative-based filtering")
+        st.markdown("##### Content-based filtering")
+        st.write("Content-based filtering methods are based on the description of a product and a profile of the user’s preferred choices. In this recommendation system, products are described using keywords, and a user profile is built to express the kind of item this user likes.")
+        st.image("cbf.PNG")
+        st.write("For instance, if a user likes to watch movies such as Iron Man, the recommender system recommends movies of the superhero genre or films describing Tony Stark.")
+        st.markdown("##### Collaborative-based filtering")
+        st.write("The collaborative filtering method is based on gathering and analyzing data on user’s behavior. This includes the user’s online activities and predicting what they will like based on the similarity with other users.")
+        st.image("clbf.PNG")
+        st.write("For example, if user A has seen Spiderman, Batman and Godzilla while user B likes Godzilla, Batman, and Superman, they have similar interests. So, it is highly likely that A would like Superman and B would enjoy Spiderman. This is how collaborative filtering takes place.")
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
 
