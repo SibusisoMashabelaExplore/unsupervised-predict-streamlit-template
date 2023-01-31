@@ -35,7 +35,11 @@ from PIL import Image
 import PIL.Image as PILI
 import plotly_express as px
 
+# Data Visulization
+import matplotlib.pyplot as plt
+
 # Custom Libraries
+
 from utils.data_loader import load_movie_titles
 from recommenders.collaborative_based import collab_model
 from recommenders.content_based import content_model
@@ -54,6 +58,12 @@ df_v = df_val_counts.reset_index()
 df_v.columns = ['Movie', 'counts']
 matrix = df_v.pivot_table(columns=['Movie'], values='counts')
 
+# Loading a css stylesheet
+def load_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+load_css("resources/CSS/Styling.css")#
+
 # App declaration
 def main():
 
@@ -65,8 +75,56 @@ def main():
     # ----------- !! THIS CODE MUST NOT BE ALTERED !! -------------------
     # -------------------------------------------------------------------
     page_selection = st.sidebar.selectbox("Navigation", page_options)
+    if page_selection == "Recommender System":
+        # Header contents
+        st.write('# Movie Recommender Engine')
+        st.write('### EXPLORE Data Science Academy Unsupervised Predict')
+        st.image('resources/imgs/Image_header.png',use_column_width=True)
+        # Recommender System algorithm selection
+        sys = st.radio("Select an algorithm",
+                       ('Content Based Filtering',
+                        'Collaborative Based Filtering'))
 
-    if page_selection == "Home": 
+        # User-based preferences
+        st.write('### Enter Your Three Favorite Movies')
+        movie_1 = st.selectbox('Fisrt Option',title_list[14930:15200])
+        movie_2 = st.selectbox('Second Option',title_list[25055:25255])
+        movie_3 = st.selectbox('Third Option',title_list[21100:21200])
+        fav_movies = [movie_1,movie_2,movie_3]
+
+        # Perform top-10 movie recommendation generation
+        if sys == 'Content Based Filtering':
+            if st.button("Recommend"):
+                try:
+                    with st.spinner('Crunching the numbers...'):
+                        top_recommendations = content_model(movie_list=fav_movies,
+                                                            top_n=10)
+                    st.title("We think you'll like:")
+                    for i,j in enumerate(top_recommendations):
+                        st.subheader(str(i+1)+'. '+j)
+                except:
+                    st.error("Oops! Looks like this algorithm does't work.\
+                              We'll need to fix it!")
+
+
+        if sys == 'Collaborative Based Filtering':
+            if st.button("Recommend"):
+                try:
+                    with st.spinner('Crunching the numbers...'):
+                        top_recommendations = collab_model(movie_list=fav_movies,
+                                                           top_n=10)
+                    st.title("We think you'll like:")
+                    for i,j in enumerate(top_recommendations):
+                        st.subheader(str(i+1)+'. '+j)
+                except:
+                    st.error("Oops! Looks like this algorithm does't work.\
+                              We'll need to fix it!")
+
+
+    # -------------------------------------------------------------------
+
+                # ------------- SAFE FOR ALTERING/EXTENSION -------------------
+    elif page_selection == "Home": 
         # Creating header  
         m = st.markdown("""<p style="text-align: justify; font-size:12px">We're thrilled to have you on board. \n We at Alpha Analytics use data to solve real-world challenges. Movies mean different things to different people. At Alpha Analytics, we regard movies as a chance to escape reality and spend time with family, friends, and loved ones. We made the decision to make the experience Awesome! Navigate to the 'Recommender System' to begin your adventure with movies created for every type of journey you desire. We'd like to know if you enjoyed seeing these films.</p>""", unsafe_allow_html=True)
         st.header("Alpha Analytics")
@@ -161,59 +219,9 @@ def main():
         fig = px.bar(df_vn, x=df_vn["Rating"], y=df_vn["Rating Count"], color=df_vn["Rating Count"], title=x_ax_val)
         st.plotly_chart(fig)
     
-    
-    elif page_selection == "Recommender System":
-        # Header contents
-        st.write('# Movie Recommender Engine')
-        st.write('### EXPLORE Data Science Academy Unsupervised Predict')
-        st.image('resources/imgs/Image_header.png',use_column_width=True)
-        # Recommender System algorithm selection
-        sys = st.radio("Select an algorithm",
-                       ('Content Based Filtering',
-                        'Collaborative Based Filtering'))
-
-        # User-based preferences
-        st.write('### Enter Your Three Favorite Movies')
-        movie_1 = st.selectbox('Fisrt Option',title_list[14930:15200])
-        movie_2 = st.selectbox('Second Option',title_list[25055:25255])
-        movie_3 = st.selectbox('Third Option',title_list[21100:21200])
-        fav_movies = [movie_1,movie_2,movie_3]
-
-        # Perform top-10 movie recommendation generation
-        if sys == 'Content Based Filtering':
-            if st.button("Recommend"):
-                try:
-                    with st.spinner('Crunching the numbers...'):
-                        top_recommendations = content_model(movie_list=fav_movies,
-                                                            top_n=10)
-                    st.title("We think you'll like:")
-                    for i,j in enumerate(top_recommendations):
-                        st.subheader(str(i+1)+'. '+j)
-                except:
-                    st.error("Oops! Looks like this algorithm does't work.\
-                              We'll need to fix it!")
-
-
-        if sys == 'Collaborative Based Filtering':
-            if st.button("Recommend"):
-                try:
-                    with st.spinner('Crunching the numbers...'):
-                        top_recommendations = collab_model(movie_list=fav_movies,
-                                                           top_n=10)
-                    st.title("We think you'll like:")
-                    for i,j in enumerate(top_recommendations):
-                        st.subheader(str(i+1)+'. '+j)
-                except:
-                    st.error("Oops! Looks like this algorithm does't work.\
-                              We'll need to fix it!")
-
-
-    # -------------------------------------------------------------------
-
-    # ------------- SAFE FOR ALTERING/EXTENSION -------------------
-    if page_selection == "Solution Overview":
+    elif page_selection == "Solution Overview":
         st.title("Solution Overview")
-        
+
         # Detailing the approach
         st.subheader("Our Approach")
         st.write("To create an efficient system for our customers, we designed two types of recommender engines: content-based filtering and collaborative filtering systems to ensure that the movies list recommended by the corresponds to their preferences. The goal of content-based techniques is to attempt to construct a model based on the given 'features' that explains the observed user-item interactions. Considering users and movies, we will try to model the fact that 'User1' enjoys 'action' movies, therefore we can recommend some action movies to him.")
@@ -241,6 +249,12 @@ def main():
         st.write("The collaborative filtering method is based on gathering and analyzing data on user’s behavior. This includes the user’s online activities and predicting what they will like based on the similarity with other users.")
         st.image("clbf.PNG")
         st.write("For example, if user A has seen Spiderman, Batman and Godzilla while user B likes Godzilla, Batman, and Superman, they have similar interests. So, it is highly likely that A would like Superman and B would enjoy Spiderman. This is how collaborative filtering takes place.")
+
+        st.write("--")
+        w1,w2,w3 = st.columns([1,1,1])
+        w2.image("https://t.ly/vQtS")
+    
+
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
 
