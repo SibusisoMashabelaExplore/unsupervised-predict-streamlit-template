@@ -231,10 +231,13 @@ def main():
         # Creating plots to show statistics
         st.markdown("##### Movie Production by Year")
         st.image("movie_produc_yr.png")
+	st.write("We can see that 2015 and 2016 represent the years with most movie production amongst the years. This could be a direct impact of the increase in sequels of several movies. It might be interesting to see if the sequels are as good as the original movies")
         st.markdown("##### Top 20 Movies by Rating")
         st.image("top20rted.png")
+	st.write("The 90's must have had people going to the movies as movies from that era has most ratings")
         st.markdown("##### Genres to look out for")
         st.image("genre.png")
+	st.write("It is obvious that peope want to see some action and thrillers that is why the top  genres seen are action packed movies")
 
         # Modelling section
         st.subheader("Models")
