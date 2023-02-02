@@ -59,17 +59,24 @@ df_v.columns = ['Movie', 'counts']
 matrix = df_v.pivot_table(columns=['Movie'], values='counts')
 
 # Loading a css stylesheet
+
+
 def load_css(file_name):
     with open(file_name) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-load_css("resources/CSS/Styling.css")#
+
+
+load_css("resources/CSS/Styling.css")
 
 # App declaration
+
+
 def main():
 
     # DO NOT REMOVE the 'Recommender System' option below, however,
     # you are welcome to add more options to enrich your app.
-    page_options = ["Recommender System","Home", "About Us", "Project", "Solution Overview"]
+    page_options = ["Recommender System", "Home",
+                    "About Us", "Project", "Solution Overview"]
 
     # -------------------------------------------------------------------
     # ----------- !! THIS CODE MUST NOT BE ALTERED !! -------------------
@@ -79,7 +86,7 @@ def main():
         # Header contents
         st.write('# Movie Recommender Engine')
         st.write('### EXPLORE Data Science Academy Unsupervised Predict')
-        st.image('resources/imgs/Image_header.png',use_column_width=True)
+        st.image('resources/imgs/Image_header.png', use_column_width=True)
         # Recommender System algorithm selection
         sys = st.radio("Select an algorithm",
                        ('Content Based Filtering',
@@ -87,22 +94,24 @@ def main():
 
         # User-based preferences
         st.write('### Enter Your Three Favorite Movies')
-        movie_1 = st.selectbox('Fisrt Option',title_list[14930:15200])
-        movie_2 = st.selectbox('Second Option',title_list[25055:25255])
-        movie_3 = st.selectbox('Third Option',title_list[21100:21200])
-        fav_movies = [movie_1,movie_2,movie_3]
+        movie_1 = st.selectbox('Fisrt Option', title_list[14930:15200])
+        movie_2 = st.selectbox('Second Option', title_list[25055:25255])
+        movie_3 = st.selectbox('Third Option', title_list[21100:21200])
+        fav_movies = [movie_1, movie_2, movie_3]
+
+        # Perform top-10 movie recommendation generation
+        if sys == 'Content Based Filtering':
             if st.button("Recommend"):
                 try:
                     with st.spinner('Crunching the numbers...'):
                         top_recommendations = content_model(movie_list=fav_movies,
                                                             top_n=10)
                     st.title("We think you'll like:")
-                    for i,j in enumerate(top_recommendations):
+                    for i, j in enumerate(top_recommendations):
                         st.subheader(str(i+1)+'. '+j)
                 except:
                     st.error("Oops! Looks like this algorithm does't work.\
                               We'll need to fix it!")
-
 
         if sys == 'Collaborative Based Filtering':
             if st.button("Recommend"):
@@ -111,28 +120,26 @@ def main():
                         top_recommendations = collab_model(movie_list=fav_movies,
                                                            top_n=10)
                     st.title("We think you'll like:")
-                    for i,j in enumerate(top_recommendations):
+                    for i, j in enumerate(top_recommendations):
                         st.subheader(str(i+1)+'. '+j)
                 except:
                     st.error("Oops! Looks like this algorithm does't work.\
                               We'll need to fix it!")
 
-
     # -------------------------------------------------------------------
 
                 # ------------- SAFE FOR ALTERING/EXTENSION -------------------
-    elif page_selection == "Home": 
-        # Creating header  
+    elif page_selection == "Home":
+        # Creating header
         m = st.markdown("""<p style="text-align: justify; font-size:15px">We're thrilled to have you on board. \n We at Alpha Analytics use data to solve real-world challenges. Movies mean different things to different people. At Alpha Analytics, we regard movies as a chance to escape reality and spend time with family, friends, and loved ones. We made the decision to make the experience Awesome! Navigate to the 'Recommender System' to begin your adventure with movies created for every type of journey you desire. We'd like to know if you enjoyed seeing these films.</p>""", unsafe_allow_html=True)
         st.header("Alpha Analytics")
         st.image("logo.jpg")
         st.write("--")
 
-
         # Creating "Why Choose Us columns"
-        col1,col2 = st.columns([1,2.5])
+        col1, col2 = st.columns([1, 2.5])
         col2.markdown("## WHY CHOOSE US")
-        a1,a2,a3 = st.columns([1,1,1])
+        a1, a2, a3 = st.columns([1, 1, 1])
         # Data
         a1.markdown("#### DATA")
         a1.write("Discover and analyse important information and trends in your data")
@@ -145,9 +152,10 @@ def main():
         st.write("--")
 
         # Creating clients columns
-        v1,v2 = st.columns([23,1])
-        v1.markdown("<h1 style='text-align: center; color: white;'> Our Clients</h1>", unsafe_allow_html=True)
-        x1,x2,x3,x4 = st.columns([1,1,1,1])
+        v1, v2 = st.columns([23, 1])
+        v1.markdown(
+            "<h1 style='text-align: center; color: white;'> Our Clients</h1>", unsafe_allow_html=True)
+        x1, x2, x3, x4 = st.columns([1, 1, 1, 1])
         x1.image("https://t.ly/lGTT")
         x2.image("https://t.ly/UxE_2")
         x3.image("https://t.ly/96lZ")
@@ -156,11 +164,11 @@ def main():
         st.write("--")
 
         # Creating Contact columns
-        col3,col4 = st.columns([1,2])
+        col3, col4 = st.columns([1, 2])
         col4.markdown("## Contact Us")
         col5 = st.text_input("Email", "Enter your email")
         col6 = st.text_area("Message", "Your Message")
-        but11,but12,but13 = st.columns([1,4,1])
+        but11, but12, but13 = st.columns([1, 4, 1])
 
         # Submit button
         if but11.button("Submit"):
@@ -169,7 +177,7 @@ def main():
     elif page_selection == "About Us":
         # Adding logo and title
         logo, title = st.columns(2)
-        
+
         logo.image("https://t.ly/vQtS")
 
         title.header("Alpha Analytics")
@@ -179,10 +187,10 @@ def main():
         st.write("--")
 
         # Creating columns for images
-        c1,c2,c3 = st.columns([3,6,1])
+        c1, c2, c3 = st.columns([3, 6, 1])
         c2.markdown("## Meet the Alphas")
-        d1,d2,d3= st.columns([1,1,1])
-        e1,e2,e3= st.columns([1,1,1])
+        d1, d2, d3 = st.columns([1, 1, 1])
+        e1, e2, e3 = st.columns([1, 1, 1])
         d1.image("francis.jpg")
         d1.write("#### Francis Egah, CEO")
         d2.image("olisa (1).png")
@@ -194,8 +202,8 @@ def main():
         e2.image("karabo (1).PNG")
         e2.write("#### Karabo Molema, Business Analyst")
         st.write("--")
-        st.write("<h1 style='text-align: center; color: red;'>Alpha Analytics</h1>", unsafe_allow_html=True)
-
+        st.write("<h1 style='text-align: center; color: red;'>Alpha Analytics</h1>",
+                 unsafe_allow_html=True)
 
     elif page_selection == "Project":
         st.title("Movie Recommender")
@@ -208,15 +216,16 @@ def main():
         st.write("No worries about choosing which movie to see. Use our movie database to see what ratings other moviegoers have given to some of their favorite films.")
         #
         x_ax_val = st.selectbox("Select Movie", options=matrix.columns)
-        
+
         rtin = opt[opt["title"] == x_ax_val].value_counts(opt["rating"])
         rect = pd.DataFrame(rtin)
         df_vn = rect.reset_index()
         df_vn.columns = ['Rating', 'Rating Count']
-        
-        fig = px.bar(df_vn, x=df_vn["Rating"], y=df_vn["Rating Count"], color=df_vn["Rating Count"], title=x_ax_val)
+
+        fig = px.bar(df_vn, x=df_vn["Rating"], y=df_vn["Rating Count"],
+                     color=df_vn["Rating Count"], title=x_ax_val)
         st.plotly_chart(fig)
-    
+
     elif page_selection == "Solution Overview":
         st.title("Solution Overview")
 
@@ -224,24 +233,26 @@ def main():
         st.subheader("Our Approach")
         st.write("To create an efficient system for our customers, we designed two types of recommender engines: content-based filtering and collaborative filtering systems to ensure that the movies list recommended by the corresponds to their preferences. The goal of content-based techniques is to attempt to construct a model based on the given 'features' that explains the observed user-item interactions. Considering users and movies, we will try to model the fact that 'User1' enjoys 'action' movies, therefore we can recommend some action movies to him.")
         st.write("In collaborative filtering, new movies are recommended to consumers based on the interests and preferences of other like users. It is a very intelligent recommender system that is based on the similarities of various users. It analyzes the preferences of similar users and makes recommendations.")
-        
+
         # EDA section
         st.subheader("EDA")
         st.write("Let's give you some insight to understand our data")
         # Creating plots to show statistics
         st.markdown("##### Movie Production by Year")
         st.image("movie_produc_yr.png")
-	st.write("We can see that 2015 and 2016 represent the years with most movie production amongst the years. This could be a direct impact of the increase in sequels of several movies. It might be interesting to see if the sequels are as good as the original movies")
+        st.write("We can see that 2015 and 2016 represent the years with most movie production amongst the years. This could be a direct impact of the increase in sequels of several movies. It might be interesting to see if the sequels are as good as the original movies")
         st.markdown("##### Top 20 Movies by Rating")
         st.image("top20rted.png")
-	st.write("The 90's must have had people going to the movies as movies from that era has most ratings")
+        st.write(
+            "The 90's must have had people going to the movies as movies from that era has most ratings")
         st.markdown("##### Genres to look out for")
         st.image("genre.png")
-	st.write("It is obvious that peope want to see some action and thrillers that is why the top  genres seen are action packed movies")
+        st.write("It is obvious that peope want to see some action and thrillers that is why the top  genres seen are action packed movies")
 
         # Modelling section
         st.subheader("Models")
-        st.markdown("Two algorithmic approach will be used for the model development. Namely Content-based filtering and Collaborative-based filtering")
+        st.markdown(
+            "Two algorithmic approach will be used for the model development. Namely Content-based filtering and Collaborative-based filtering")
         st.markdown("##### Content-based filtering")
         st.write("Content-based filtering methods are based on the description of a product and a profile of the user’s preferred choices. In this recommendation system, products are described using keywords, and a user profile is built to express the kind of item this user likes.")
         st.image("cbf.PNG")
@@ -252,9 +263,8 @@ def main():
         st.write("For example, if user A has seen Spiderman, Batman and Godzilla while user B likes Godzilla, Batman, and Superman, they have similar interests. So, it is highly likely that A would like Superman and B would enjoy Spiderman. This is how collaborative filtering takes place.")
 
         st.write("--")
-        w1,w2,w3 = st.columns([1,1,1])
+        w1, w2, w3 = st.columns([1, 1, 1])
         w2.image("https://t.ly/vQtS")
-    
 
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
