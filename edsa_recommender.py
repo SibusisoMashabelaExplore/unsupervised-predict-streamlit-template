@@ -91,9 +91,6 @@ def main():
         movie_2 = st.selectbox('Second Option',title_list[25055:25255])
         movie_3 = st.selectbox('Third Option',title_list[21100:21200])
         fav_movies = [movie_1,movie_2,movie_3]
-
-        # Perform top-10 movie recommendation generation
-        if sys == 'Content Based Filtering':
             if st.button("Recommend"):
                 try:
                     with st.spinner('Crunching the numbers...'):
@@ -126,7 +123,7 @@ def main():
                 # ------------- SAFE FOR ALTERING/EXTENSION -------------------
     elif page_selection == "Home": 
         # Creating header  
-        m = st.markdown("""<p style="text-align: justify; font-size:12px">We're thrilled to have you on board. \n We at Alpha Analytics use data to solve real-world challenges. Movies mean different things to different people. At Alpha Analytics, we regard movies as a chance to escape reality and spend time with family, friends, and loved ones. We made the decision to make the experience Awesome! Navigate to the 'Recommender System' to begin your adventure with movies created for every type of journey you desire. We'd like to know if you enjoyed seeing these films.</p>""", unsafe_allow_html=True)
+        m = st.markdown("""<p style="text-align: justify; font-size:15px">We're thrilled to have you on board. \n We at Alpha Analytics use data to solve real-world challenges. Movies mean different things to different people. At Alpha Analytics, we regard movies as a chance to escape reality and spend time with family, friends, and loved ones. We made the decision to make the experience Awesome! Navigate to the 'Recommender System' to begin your adventure with movies created for every type of journey you desire. We'd like to know if you enjoyed seeing these films.</p>""", unsafe_allow_html=True)
         st.header("Alpha Analytics")
         st.image("logo.jpg")
         st.write("--")
@@ -155,6 +152,7 @@ def main():
         x2.image("https://t.ly/UxE_2")
         x3.image("https://t.ly/96lZ")
         x4.image("https://t.ly/AvAQ")
+        st.markdown("##### The organizations above have over the years enjoyed excellent data solution delivery through our diverse services. In this time, we have maintained excellent customer relationship and always putting the client at the top of our priorities")
         st.write("--")
 
         # Creating Contact columns
